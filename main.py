@@ -6,6 +6,7 @@ from flask import Flask
 from init import db, ma
 
 # Import blueprint from cli_controller
+from controllers.cli_controller import Blueprint, db_commands
 
 # Import blueprint from cpartners_controller
 
@@ -21,9 +22,8 @@ def create_app():
     db.init_app(app)
     # Initialise Marshmallow
     ma.init_app(app)
-
     # Register CLI Controller
-
+    app.register_blueprint(db_commands)
     # Register cpartners controller
 
 
