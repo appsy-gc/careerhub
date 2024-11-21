@@ -18,3 +18,23 @@ def drop_tables():
     print("Tables dropped")
 
 # CLI command to seed tables
+@db_commands.cli.command("seed")
+def seed_tables():
+    partners = [
+        Partner(
+            name = "Neva Flynn",
+            club = "Fitness First",
+            address = "Fitness First Balgowlah Platinum, Condamine Street, Balgowlah NSW, Australia",
+            email = "balgowlahplatinumptm@fitnessfirst.com.au"
+        ),
+        Partner(
+            name = "Danielle Walker",
+            club = "Goodlife",
+            address = "Goodlife Health Clubs Point Cook, Centre, Main Street, Point Cook VIC, Australia",
+            email = "ptmpointcook@goodlife.com.au"
+        )
+    ]
+
+    db.session.add_all(partners)
+    db.session.commit()
+    print("Tables seeded")
