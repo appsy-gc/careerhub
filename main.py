@@ -7,6 +7,7 @@ from init import db, ma
 
 # Import blueprint from cli_controller
 from controllers.cli_controller import Blueprint, db_commands
+from controllers.cpartner_controller import partners_bp
 
 # Import blueprint from cpartners_controller
 
@@ -18,6 +19,9 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 
+    # Stop flask from ordering data
+    app.json.sort_keys = False
+
     # Initialise SQLAlcemy
     db.init_app(app)
     # Initialise Marshmallow
@@ -25,6 +29,7 @@ def create_app():
     # Register CLI Controller
     app.register_blueprint(db_commands)
     # Register cpartners controller
+    app.register_blueprint(partners_bp)
 
 
     return app

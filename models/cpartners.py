@@ -1,5 +1,4 @@
 from init import db, ma
-from sqlalchemy import CheckConstraint
 
 class Partner(db.Model):
     __tablename__ = "cpartners"
@@ -11,6 +10,7 @@ class Partner(db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
 
 class PartnerSchema(ma.Schema):
+    ordered=True
     class Meta:
         fields = ("id", "name", "club", "address", "email")
 
