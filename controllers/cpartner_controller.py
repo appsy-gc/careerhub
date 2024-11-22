@@ -77,3 +77,14 @@ def update_partner(partner_id):
         return {"message": f"Partner with id: '{partner_id}' does not exist"}, 404
 
 # Delete - /partner/id - DELETE
+@partners_bp.route("/<int:partner_id>", methods=["DELETE"])
+def delete_partner(partner_id):
+    stmt = db.select(Partner).filter_by(id=partner_id)
+    partner = db.session.scalar(stmt)
+
+    if partner:
+        db.session.delete(partner)
+        db.session.commit()
+        return {"message": f"Partner: '{partner.name}' successfuly deleted"}
+    else:
+        return {"message": f"Partner with id: '{partner_id} does not exist"}, 404
