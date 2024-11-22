@@ -57,9 +57,23 @@ def create_partner():
             # Return specific field that is in violation
             return {"message": f"The field '{err.orig.diag.column_name}' is required"}, 409
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
-            return {"message": "Data already exists. Update course details instead"}, 409
+            return {"message": "Data already exists. Update partner details instead"}, 409
 
 # Update - /partner/id - PUT or PATCH
+@partners_bp.route("/<int:partner_id>", methods=["PUT", "PATCH"])
+def update_partner(partner_id):
+    stmt = db.select(Partner).filter_by(id=partner_id)
+    partner = db.session.scalar(stmt)
+    body_data = request.get_json()
 
+    if partner:
+        partner.name = body_data.get("name") or partner.name
+        partner.club = body_data.get("club") or partner.club
+        partner.address = body_data.get("address") or partner.address
+        partner.email = body_data.get("email") or partner.email
+        db.session.commit()
+        return PartnerSchema().dump(partner)
+    else:
+        return {"message": f"Partner with id: '{partner_id}' does not exist"}, 404
 
 # Delete - /partner/id - DELETE
