@@ -1,6 +1,6 @@
 # Import packages
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 # Import from init.py
 from init import db, ma
@@ -31,5 +31,9 @@ def create_app():
     # Register cpartners controller
     app.register_blueprint(partners_bp)
 
+    # Add a route for the front-end
+    @app.route("/")
+    def index():
+        return render_template("index.html")
 
     return app
