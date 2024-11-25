@@ -48,7 +48,9 @@
     <footer></footer>
     
     <script>
-        const API_BASE_URL = 'https://your-api-url.com';
+        console.log("JavaScript is running");
+
+        const API_BASE_URL = 'https://ch-careerhub.onrender.com/partners/';
 
         // Validate email
         function validateEmail(email) {
@@ -58,9 +60,17 @@
 
         // Fetch records on load
         async function fetchRecords() {
-            const response = await fetch(`${API_BASE_URL}/cp`);
-            const data = await response.json();
-            populateTable(data);
+            try {
+                const response = await fetch(`${API_BASE_URL}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log("Fetched data:", data); // Debugging log
+                populateTable(data);
+            } catch (error) {
+                console.error("Error fetching records:", error);
+            }
         }
 
         // Populate table with data
@@ -100,7 +110,7 @@
                 return;
             }
 
-            const response = await fetch(`${API_BASE_URL}/cp`, {
+            const response = await fetch(API_BASE_URL, { // POST or PUT directly to the base URL
                 method: payload.id ? 'PUT' : 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -110,7 +120,7 @@
 
         // Edit record
         async function editRecord(id) {
-            const response = await fetch(`${API_BASE_URL}/cp/${id}`);
+            const response = await fetch(`${API_BASE_URL}${id}`); // Append the ID directly
             const record = await response.json();
             document.getElementById('name').value = record.name;
             document.getElementById('club').value = record.club;
@@ -120,7 +130,7 @@
 
         // Delete record
         async function deleteRecord(id) {
-            await fetch(`${API_BASE_URL}/cp/${id}`, { method: 'DELETE' });
+            await fetch(`${API_BASE_URL}${id}`, { method: 'DELETE' }); // Append the ID directly
             fetchRecords();
         }
 

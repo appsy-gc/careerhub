@@ -1,6 +1,7 @@
 # Import packages
 import os
 from flask import Flask, render_template
+from flask_cors import CORS
 
 # Import from init.py
 from init import db, ma
@@ -14,6 +15,7 @@ from controllers.cpartner_controller import partners_bp
 def create_app():
     # Initialise
     app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     print("Server started...")
 
