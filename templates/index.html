@@ -42,27 +42,40 @@
             </form>
         </div>
 
+        
+
+        <div class="filter-container">
+            <input type="text" id="searchBar" placeholder="Search..." oninput="filterTable()">
+            <select id="clubFilter" onchange="filterTable()">
+                <option value="">All Clubs</option>
+            </select>
+            <!-- <select id="suburbFilter" onchange="filterTable()">
+                <option value="">All Suburbs</option>
+            </select> -->
+        </div>
+
         <!-- Buttons for editing or deleting a selected record -->
         <div class="action-buttons">
             <button id="editButton" disabled>Edit</button>
             <button id="deleteButton" disabled>Delete</button>
         </div>
 
+        <!-- Table to display records -->
         <div class="data-container">
-            <!-- Table to display records -->
-             <table id="dataTable">
+            <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Edit</th>
+                        <!-- <th>ID</th> -->
                         <th>Name</th>
                         <th>Club</th>
                         <th>Address</th>
                         <th>Email</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
-             </table>
+            </table>
+        </div>
         </div>
     </main>
 
@@ -72,6 +85,7 @@
         const API_BASE_URL = 'https://ch-careerhub.onrender.com/partners/';
 
         let selectedRecordId = null; // To track the selected record
+        let allRecords = []; // Store all records for filtering
 
         // Validate email
         function validateEmail(email) {
@@ -87,8 +101,9 @@
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
-                console.log("Fetched data:", data);
+                allRecords = data; // Store all records for filtering
                 populateTable(data);
+                populateFilters(data); // Populate Club and Suburb filters
             } catch (error) {
                 console.error("Error fetching records:", error);
             }
@@ -99,6 +114,7 @@
             const tbody = document.querySelector('#dataTable tbody');
             tbody.innerHTML = '';
             records.forEach(record => {
+                const suburb = extractSuburb(record.address); // Extract suburb dynamically
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><input type="radio" name="selectRecord" value="${record.id}" onclick="selectRecord(${record.id})"></td>
@@ -212,6 +228,67 @@
             selectedRecordId = null;
             document.getElementById('editButton').disabled = true;
             document.getElementById('deleteButton').disabled = true;
+        }
+
+        // Populate dropdown filters
+        function populateFilters(records) {
+            const clubs = new Set();
+            const suburbs = new Set();
+
+            records.forEach(record => {
+                clubs.add(record.club);
+                suburbs.add(extractSuburb(record.address));
+            });
+
+            const clubFilter = document.getElementById('clubFilter');
+            clubs.forEach(club => {
+                const option = document.createElement('option');
+                option.value = club;
+                option.textContent = club;
+                clubFilter.appendChild(option);
+            });
+
+            // const suburbFilter = document.getElementById('suburbFilter');
+            // suburbs.forEach(suburb => {
+            //     const option = document.createElement('option');
+            //     option.value = suburb;
+            //     option.textContent = suburb;
+            //     suburbFilter.appendChild(option);
+            // });
+        }
+
+        // Filter table dynamically
+        function filterTable() {
+            const searchQuery = document.getElementById('searchBar').value.toLowerCase();
+            const clubFilter = document.getElementById('clubFilter').value;
+            // const suburbFilter = document.getElementById('suburbFilter').value;
+
+            const filteredRecords = allRecords.filter(record => {
+                const suburb = extractSuburb(record.address);
+                return (
+                    (record.name.toLowerCase().includes(searchQuery) ||
+                        record.club.toLowerCase().includes(searchQuery) ||
+                        record.address.toLowerCase().includes(searchQuery) ||
+                        record.email.toLowerCase().includes(searchQuery)) &&
+                    (clubFilter === '' || record.club === clubFilter) 
+                    // (suburbFilter === '' || suburb === suburbFilter)
+                );
+            });
+
+            populateTable(filteredRecords); // Update table with filtered records
+        }
+
+        // Extract suburb from the address
+        function extractSuburb(address) {
+            const parts = address.split(',');
+            return parts.length > 1 ? parts[1].trim() : address;
+        }
+
+        // Enable buttons when a record is selected
+        function selectRecord(id) {
+            selectedRecordId = id;
+            document.getElementById('editButton').disabled = false;
+            document.getElementById('deleteButton').disabled = false;
         }
 
         // Initial fetch

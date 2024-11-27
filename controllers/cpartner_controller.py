@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from init import db
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
@@ -38,18 +38,41 @@ def create_partner():
     try:
         # Get information from request body
         body_data = request.get_json()
-        # Create partner instance
+
+        if isinstance(body_data, list):
+            new_partners = []
+            for entry in body_data:
+            # Create partner instance
+                new_partner = Partner(
+                    name = entry.get("name", "TBC"),
+                    club = entry.get("club", "TBC"),
+                    address = entry.get("address", "TBC"),
+                    email = entry.get("email", "TBC")
+                )
+                new_partners.append(new_partner)
+
+            # Add multiple partners
+            db.session.add_all(new_partners)
+            # Commit
+            db.session.commit()
+
+            return jsonify(PartnerSchema().dump(new_partners)), 201
+        
+        # Single record creation
         new_partner = Partner(
-            name = body_data.get("name"),
-            club = body_data.get("club"),
-            address = body_data.get("address"),
-            email = body_data.get("email")
+            name=body_data.get("name", "TBC"),
+            club=body_data.get("club", "TBC"),
+            address=body_data.get("address", "TBC"),
+            email=body_data.get("email", "TBC"),
         )
-        # Add
+
+        # Add the single partner
         db.session.add(new_partner)
-        # Commit
         db.session.commit()
+
+        # Return the created partner
         return PartnerSchema().dump(new_partner), 201
+
     except IntegrityError as err:
         print(err.orig.pgcode)
         if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
