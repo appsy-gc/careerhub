@@ -18,3 +18,56 @@ html, body {
     width: 100%;
     overflow-x: hidden;
 }
+
+h1 {
+    text-align: center;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#dataForm {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    width: 12%;
+    text-align: right;
+    padding-right: 10px;
+}
+
+input {
+    width: 90%;
+}
+
+.form-button {
+    width: 150px;
+    align-self: center;
+    margin: 10px 0;
+    height: 30px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+}
+
+.data-container {
+    display: flex;
+    justify-content: center;
+}
+
+#dataTable {
+    font-size: 0.9rem;
+    width: 90vw;
+}
+
+#dataTable td:first-child {
+    text-align: center;
+}
+
+#dataTable tr:hover {
+    background-color: #f1f1f1;
+}

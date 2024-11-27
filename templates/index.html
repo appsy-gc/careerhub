@@ -16,40 +16,62 @@
     <main>
         <h1>Manage Career Partner Database Records</h1>
 
-        <!-- Form for CRUD operations -->
-        <form id="dataForm">
-            <input type="hidden" id="recordId" name="id"> <!-- Hidden field to track ID for updates -->
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="club">Club:</label>
-            <input type="text" id="club" name="club" required>
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <button type="submit">Save</button>
-        </form>
+        <div class="form-container">
+            <!-- Form for CRUD operations -->
+            <form id="dataForm">
+                <input type="hidden" id="recordId" name="id"> <!-- Hidden field to track ID for updates -->
+                <table id="formTable">
+                    <tr>
+                        <td class="form-label"><label for="name">Name:</label></td>
+                        <td class="form-input"><input type="text" id="name" name="name" required></td>
+                    </tr>
+                    <tr>
+                        <td class="form-label"><label for="club">Club:</label></td>
+                        <td class="form-input"><input type="text" id="club" name="club" required></td>
+                    </tr>
+                    <tr>
+                        <td class="form-label"><label for="address">Address:</label></td>
+                        <td class="form-input"><input type="text" id="address" name="address" required> </td>
+                    </tr>
+                    <tr>
+                        <td class="form-label"><label for="email">Email:</label></td>
+                        <td class="form-input"><input type="email" id="email" name="email" required></td>
+                    </tr>
+                </table>
+                <button class="form-button" type="submit">Save</button>
+            </form>
+        </div>
 
-        <!-- Table to display records -->
-         <table id="dataTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Club</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-         </table>
+        <!-- Buttons for editing or deleting a selected record -->
+        <div class="action-buttons">
+            <button id="editButton" disabled>Edit</button>
+            <button id="deleteButton" disabled>Delete</button>
+        </div>
+
+        <div class="data-container">
+            <!-- Table to display records -->
+             <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Club</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+             </table>
+        </div>
     </main>
 
     <footer></footer>
     
     <script>
         const API_BASE_URL = 'https://ch-careerhub.onrender.com/partners/';
+
+        let selectedRecordId = null; // To track the selected record
 
         // Validate email
         function validateEmail(email) {
@@ -79,19 +101,60 @@
             records.forEach(record => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
+                    <td><input type="radio" name="selectRecord" value="${record.id}" onclick="selectRecord(${record.id})"></td>
                     <td>${record.id}</td>
                     <td>${record.name}</td>
                     <td>${record.club}</td>
                     <td>${record.address}</td>
                     <td>${record.email}</td>
-                    <td>
-                        <button onclick="editRecord(${record.id})">Edit</button>
-                        <button onclick="deleteRecord(${record.id})">Delete</button>
-                    </td>
                 `;
                 tbody.appendChild(row);
             });
         }
+
+        // Enable buttons when a record is selected
+        function selectRecord(id) {
+            selectedRecordId = id;
+            document.getElementById('editButton').disabled = false;
+            document.getElementById('deleteButton').disabled = false;
+        }
+
+        // Edit record
+        document.getElementById('editButton').addEventListener('click', async () => {
+            if (!selectedRecordId) return;
+            try {
+                const response = await fetch(`${API_BASE_URL}${selectedRecordId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const record = await response.json();
+
+                // Populate form fields for editing
+                document.getElementById('recordId').value = record.id;
+                document.getElementById('name').value = record.name;
+                document.getElementById('club').value = record.club;
+                document.getElementById('address').value = record.address;
+                document.getElementById('email').value = record.email;
+            } catch (error) {
+                console.error("Error editing record:", error);
+            }
+        });
+
+        // Delete record
+        document.getElementById('deleteButton').addEventListener('click', async () => {
+            if (!selectedRecordId) return;
+            try {
+                const response = await fetch(`${API_BASE_URL}${selectedRecordId}`, { method: 'DELETE' });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                alert("Record deleted successfully!");
+                fetchRecords(); // Refresh table
+                resetActionButtons(); // Reset buttons
+            } catch (error) {
+                console.error("Error deleting record:", error);
+            }
+        });
 
         // Handle form submission for add/update
         document.getElementById('dataForm').addEventListener('submit', async (e) => {
@@ -132,44 +195,11 @@
                 alert(method === 'POST' ? "Record added successfully!" : "Record updated successfully!");
                 fetchRecords(); // Refresh records after success
                 resetForm(); // Clear form fields
+                resetActionButtons(); // Reset buttons
             } catch (error) {
                 console.error("Error saving record:", error);
             }
         });
-
-        // Edit record
-        async function editRecord(id) {
-            try {
-                const response = await fetch(`${API_BASE_URL}${id}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const record = await response.json();
-
-                // Populate form fields for editing
-                document.getElementById('recordId').value = record.id;
-                document.getElementById('name').value = record.name;
-                document.getElementById('club').value = record.club;
-                document.getElementById('address').value = record.address;
-                document.getElementById('email').value = record.email;
-            } catch (error) {
-                console.error("Error editing record:", error);
-            }
-        }
-
-        // Delete record
-        async function deleteRecord(id) {
-            try {
-                const response = await fetch(`${API_BASE_URL}${id}`, { method: 'DELETE' });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                alert("Record deleted successfully!");
-                fetchRecords();
-            } catch (error) {
-                console.error("Error deleting record:", error);
-            }
-        }
 
         // Reset form fields
         function resetForm() {
@@ -177,8 +207,16 @@
             document.getElementById('recordId').value = '';
         }
 
+        // Reset action buttons
+        function resetActionButtons() {
+            selectedRecordId = null;
+            document.getElementById('editButton').disabled = true;
+            document.getElementById('deleteButton').disabled = true;
+        }
+
         // Initial fetch
         fetchRecords();
+
     </script>
 
 </body>
