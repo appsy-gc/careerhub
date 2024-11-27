@@ -7,7 +7,7 @@ class Partner(db.Model):
     name = db.Column(db.String(100), nullable=False)
     club = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique=True)
+    email = db.Column(db.String(100), nullable=False)
 
 class PartnerSchema(ma.Schema):
     ordered=True

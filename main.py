@@ -37,6 +37,11 @@ def create_app():
     @app.route("/")
     def index():
         return render_template("index.html")
+    
+    # Route for data page
+    @app.route("/database")
+    def database():
+        return render_template("database.html")
 
     return app
 
