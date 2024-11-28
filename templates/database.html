@@ -7,35 +7,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/static/data-styles.css">
 </head>
 <body>
 
-    <header></header>
+    <header>
+        <div class="row-one">(+61) 1300 634 104</div>
+        <div class="row-two"></div>
+    </header>
 
     <main>
-        <h1>Manage Career Partner Database Records</h1>
+        <h1 id="database-heading">Manage Career Partner Database Records</h1>
 
-        <div class="form-container">
+        <div class="form-container">    
             <!-- Form for CRUD operations -->
             <form id="dataForm">
                 <input type="hidden" id="recordId" name="id"> <!-- Hidden field to track ID for updates -->
                 <table id="formTable">
                     <tr>
-                        <td class="form-label"><label for="name">Name:</label></td>
+                        <td class="form-label"><label for="name">Name</label></td>
                         <td class="form-input"><input type="text" id="name" name="name" required></td>
                     </tr>
                     <tr>
-                        <td class="form-label"><label for="club">Club:</label></td>
+                        <td class="form-label"><label for="club">Club</label></td>
                         <td class="form-input"><input type="text" id="club" name="club" required></td>
                     </tr>
                     <tr>
-                        <td class="form-label"><label for="address">Address:</label></td>
+                        <td class="form-label"><label for="address">Address</label></td>
                         <td class="form-input"><input type="text" id="address" name="address" required> </td>
                     </tr>
                     <tr>
-                        <td class="form-label"><label for="email">Email:</label></td>
+                        <td class="form-label"><label for="email">Email</label></td>
                         <td class="form-input"><input type="email" id="email" name="email" required></td>
                     </tr>
                 </table>
@@ -57,6 +62,7 @@
                 <option value="">All Suburbs</option>
             </select> -->
         </div>
+
 
         <!-- Buttons for editing or deleting a selected record -->
         <div class="action-buttons">
@@ -315,6 +321,7 @@
 
         // Add event listener to the Clear button
         document.getElementById('clearButton').addEventListener('click', clearForm);
+
 
         // Initial fetch
         fetchRecords();

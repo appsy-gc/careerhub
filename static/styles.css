@@ -7,9 +7,10 @@
     --tableWidth: 60vw;
     --boxShadow: 2px 2px 5px 0px rgba(255,255,255,1);
     --textShadow: 2px 2px 2px rgba(181, 239, 73, 0.73);
+    --bodyText: font-family: "Montserrat", sans-serif;
+    --headingFont: font-family: "Big Shoulders Display", sans-serif;
     
     box-sizing: border-box;
-    font-family: "Montserrat", sans-serif;
 }
 
 html, body {
@@ -17,9 +18,13 @@ html, body {
     padding: 0;
     width: 100%;
     overflow-x: hidden;
+    font-family: var(--bodyFont);
 }
 
-h1 {
-    text-align: center;
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--headingFont);
 }
 

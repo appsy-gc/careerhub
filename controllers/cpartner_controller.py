@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 from init import db
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
@@ -111,3 +111,6 @@ def delete_partner(partner_id):
         return {"message": f"Partner: '{partner.name}' successfuly deleted"}
     else:
         return {"message": f"Partner with id: '{partner_id} does not exist"}, 404
+    
+
+#

@@ -10,8 +10,6 @@ from init import db, ma
 from controllers.cli_controller import Blueprint, db_commands
 from controllers.cpartner_controller import partners_bp
 
-# Import blueprint from cpartners_controller
-
 def create_app():
     # Initialise
     app = Flask(__name__)
@@ -32,6 +30,7 @@ def create_app():
     app.register_blueprint(db_commands)
     # Register cpartners controller
     app.register_blueprint(partners_bp)
+
 
     # Add a route for the front-end
     @app.route("/")
