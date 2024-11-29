@@ -19,15 +19,19 @@ html, body {
     font-family: var(--bodyFont);
 }
 
-body {
-    background-color: #e6e5e5;
+ul {
+    padding: 0;
+    margin: 0;
 }
 
 .body-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
+    min-height: 100vh;
+}
+
+header {
+    flex-shrink: 0;
 }
 
 .header-top-row {
@@ -146,6 +150,14 @@ h4 {
     font-family: var(--headingFont);
 }
 
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 10px;
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
@@ -160,7 +172,8 @@ h4 {
 /* home page specific styling */
 
 footer {
-    padding: 20px 10px 0 10px;
+    flex-shrink: 0;
+    padding: 20px 10px 10px 10px;
     background-color: var(--chGray);
     color: white;
 }
@@ -168,6 +181,12 @@ footer {
 .footer-top,
 .footer-middle {
     display: flex;
+}
+
+.footer-top {
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .footer-top a,
@@ -178,6 +197,7 @@ footer {
 
 .footer-top ul {
     list-style: none;
+    padding: 0 0 0 30px;
 }
 
 .footer-top ul li {
@@ -189,6 +209,7 @@ footer {
 .footer-top-col-three,
 .footer-top-col-four {
     width: 25vw;
+    max-width: 300px;
 }
 
 .footer-top-col-one ul li:first-child,
@@ -240,4 +261,10 @@ footer {
 
 .footer-bottom {
     padding: 20px 10px;
+    font-size: 0.8rem;
+}
+
+.footer-bottom a {
+    color: white;
+    text-decoration: none;
 }

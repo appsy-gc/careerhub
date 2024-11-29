@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/login.css">
     <script src="https://kit.fontawesome.com/dda40b011f.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -39,9 +40,7 @@
                             <ul class="dropdown">
                                 <li><a href="#career-partners">Career Partners</a></li>
                                 <li><a href="#graduates">Our Graduates</a></li>
-                                {% if session.get('user') %}
                                 <li><a href="/database">Database Mgr</a></li>
-                                {% endif %}
                             </ul>
                         </li>
                         <li>
@@ -59,9 +58,27 @@
         </header>
 
         <main>
-            <div class="main-container"><H1>UNDER CONTSTRUCTION</H1>
+            <div class="login-container">
+                <h1>Database Login</h1>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                {% endwith %}
+                <form action="{{ url_for('login') }}" method="POST">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
             </div>
         </main>
+    
         <footer>
             <div class="footer-top">
                 <div class="footer-top-col-one">
@@ -123,6 +140,7 @@
             <div class="footer-bottom">© Clean Health 2024 | <a href="https://cleanhealth.edu.au/privacy-policy/" target="_blank">Privacy Policy</a> | <a href="https://cleanhealth.edu.au/terms-and-conditions/" target="_blank">Terms & Conditions</a></div>
         </footer>
     </div>
+    
 
 </body>
 </html>

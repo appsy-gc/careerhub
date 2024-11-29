@@ -17,7 +17,16 @@
 
     <div class="body-container">
         <header>
-            <div class="header-top-row"><span id="contact-number">(+61) 1300 634 104</span><span id="header-login"><a href="">Login</a></span></div>
+            <div class="header-top-row">
+                <span id="contact-number">(+61) 1300 634 104</span>
+                <span id="header-login">
+                    {% if session.get('user') %}
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}">Login</a>
+                    {% endif %}
+                </span>
+            </div>
             <nav>
                 <div class="nav-logo">
                     <a href="/"><img src="/static/images/header-logo.png"></a>
@@ -176,7 +185,7 @@
                     QUESTIONS? (+61) 1300 634 104
                 </div>
             </div>
-            <div class="footer-bottom">© Clean Health 2024 | Privacy Policy | Terms & Conditions</div>
+            <div class="footer-bottom">© Clean Health 2024 | <a href="https://cleanhealth.edu.au/privacy-policy/" target="_blank">Privacy Policy</a> | <a href="https://cleanhealth.edu.au/terms-and-conditions/" target="_blank">Terms & Conditions</a></div>
         </footer>
 
     </div>
