@@ -1,10 +1,7 @@
 :root {
     /* Global Variables */
-    --nciBackground: #3498db;
-    --nciSpecial: #d0fa69;
     --chSpecial: #99c93e;
-    --chGray: #363535;
-    --mainText: white;
+    --chGray: #011921;
     --tableWidth: 60vw;
     --boxShadow: 2px 2px 5px 0px rgba(255,255,255,1);
     --textShadow: 2px 2px 2px rgba(181, 239, 73, 0.73);
@@ -22,23 +19,124 @@ html, body {
     font-family: var(--bodyFont);
 }
 
-.row-one,
-.row-two {
+body {
+    background-color: #e6e5e5;
+}
+
+.body-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+.header-top-row {
     align-content: center;
 }
 
-.row-one {
+.header-top-row {
     height: 40px;
     background-color: var(--chGray);
-    color: white; 
-    font-weight: bold;
     text-align: right;
     padding: 0 10px;
 }
 
-.row-two {
+#contact-number {
+    margin-right: 10px;
+    color: white; 
+    font-weight: bold;
+}
+
+#header-login a {
+    margin-right: 10px;
+    color: white;
+    font-size: 1rem;
+    font-family: var(--headingFont);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
     height: 100px;
-    border-bottom: 3px solid black;
+    box-shadow: 3px 0px 5px 0px rgba(70, 70, 70, 0.5);
+    background-color: white;
+}
+
+.nav-logo img {
+    transform: translateY(10px);
+    margin: 0 0 0 100px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    margin-right: 100px;
+}
+
+.nav-menu ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu ul li {
+    position: relative;
+    cursor: pointer;
+    margin: 10px;
+    font-family: var(--headingFont);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-menu ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.4rem;
+}
+
+.nav-menu ul li .dropdown a {
+    color: var(--chSpecial)
+}
+
+.nav-menu ul li .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f0ecec;
+    padding: 0 10px 0 0;
+    border-top: 10px solid white;
+    border-radius: 5px;
+    min-width: 200px;
+    z-index: 1000;
+}
+
+.nav-menu ul li:hover .dropdown {
+    display: block;
+}
+
+.nav-menu ul li .dropdown li:hover a {
+    font-style: italic;
+    color: gray;
+}
+
+.nav-menu ul li:has(> .dropdown):after {
+    content: "\25BC";
+    font-size: 0.8rem;
+    color: black;
+    margin-left: 5px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-menu ul li:has(> .dropdown):hover:after {
+    content: "\25B2";
+    color: var(--chSpecial);
+    transform: translateY(-2px);
+}
+
+.nav-menu ul li .dropdown li:after {
+    content: none;
 }
 
 h1,
@@ -46,6 +144,17 @@ h2,
 h3,
 h4 {
     font-family: var(--headingFont);
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    margin: 30px;
+    padding: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 2px rgba(70, 70, 70, 0.5);
 }
 
 #database-heading {
@@ -56,8 +165,8 @@ h4 {
     display: flex;
     justify-content: center;
     margin: 20px 0;
-    background-color: var(--chGray);
-    color: white;
+    /* background-color: var(--chGray); */
+    /* color: white; */
 }
 
 #dataForm {
@@ -187,4 +296,87 @@ input {
 
 #dataTable tbody tr:hover {
     background-color: #f1f1f1;
+}
+
+footer {
+    padding: 20px 10px 0 10px;
+    background-color: var(--chGray);
+    color: white;
+}
+
+.footer-top,
+.footer-middle {
+    display: flex;
+}
+
+.footer-top a,
+.footer-middle a {
+    text-decoration: none;
+    color: white;
+}
+
+.footer-top ul {
+    list-style: none;
+}
+
+.footer-top ul li {
+    padding-bottom: 20px;
+}
+
+.footer-top-col-one,
+.footer-top-col-two,
+.footer-top-col-three,
+.footer-top-col-four {
+    width: 25vw;
+}
+
+.footer-top-col-one ul li:first-child,
+.footer-top-col-two ul li:first-child,
+.footer-top-col-three ul li:first-child {
+    padding-bottom: 10px;
+    font-family: var(--headingFont);
+    font-size: 1.5rem;
+}
+
+.footer-top-col-one ul li:not(:first-child),
+.footer-top-col-two ul li:not(:first-child),
+.footer-top-col-three ul li:not(:first-child) {
+    font-size: 0.9rem;
+}
+
+.footer-top-col-four ul li {
+    font-family: var(--headingFont);
+    font-size: 1.5rem;
+    /* font-weight: bold; */
+}
+
+.footer-middle {
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.footer-middle-left img {
+    scale: 0.8;
+}
+
+.footer-middle-middle ul {
+    display: flex;
+    list-style: none;
+}
+
+.footer-middle-right {
+    font-size: 0.9rem;
+}
+
+.socials li {
+    padding: 0 20px;
+}
+
+.socials i {
+    scale: 1.5;
+}
+
+.footer-bottom {
+    padding: 20px 10px;
 }
